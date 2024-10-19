@@ -1,0 +1,10 @@
+[package]
+name = "fido_credential_exchange_protocol"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+	[dependencies.fcx_format]
+	package = "fido_credential_exchange_format"
+	path = "../format"
