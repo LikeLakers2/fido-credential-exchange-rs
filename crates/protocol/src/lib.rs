@@ -1,4 +1,4 @@
-use fcx_format::CredentialType;
+use fcx_format::credentials::CredentialType;
 
 pub type Base64Url = String;
 pub type ShouldBe<T> = Result<T, String>;
