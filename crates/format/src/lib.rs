@@ -1,3 +1,5 @@
+pub mod extensions;
+
 pub type Base64UrlString = String;
 pub type ShouldBe<T> = Result<T, String>;
 pub type Uri = String;
@@ -262,60 +264,4 @@ pub struct Fido2LargeBlob {
 pub struct Fido2SupplementalKeys {
 	pub device: Option<bool>,
 	pub provider: Option<bool>,
-}
-
-#[derive(
-	Clone, Debug, Hash,
-	PartialEq, Eq, PartialOrd, Ord,
-)]
-pub enum Extension {
-	Other {
-		name: String,
-	},
-	
-	Shared {
-		// name = "shared"
-		accessors: Vec<SharingAccessor>,
-	},
-}
-
-#[derive(
-	Clone, Debug, Hash,
-	PartialEq, Eq, PartialOrd, Ord,
-)]
-pub struct SharingAccessor {
-	pub type_: ShouldBe<SharingAccessorType>,
-	pub account_id: Base64UrlString,
-	pub name: String,
-	pub permissions: Vec<ShouldBe<SharingAccessorPermission>>,
-}
-
-#[derive(
-	Clone, Copy, Debug, Hash,
-	PartialEq, Eq, PartialOrd, Ord,
-)]
-pub enum SharingAccessorType {
-	// type_ = "user"
-	User,
-	// type_ = "group"
-	Group,
-}
-
-#[derive(
-	Clone, Copy, Debug, Hash,
-	PartialEq, Eq, PartialOrd, Ord,
-)]
-pub enum SharingAccessorPermission {
-	// permissions = ["read"]
-	Read,
-	// permissions = ["update"]
-	Update,
-	// permissions = ["create"]
-	Create,
-	// permissions = ["delete"]
-	Delete,
-	// permissions = ["share"]
-	Share,
-	// permissions = ["manage"]
-	Manage
 }
