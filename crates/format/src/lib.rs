@@ -28,7 +28,7 @@ pub struct Account {
 	pub collections: Vec<Collection>,
 	pub items: Vec<Item>,
 	// Optional field, but the default is []
-	pub extensions: Vec<Extension>,
+	pub extensions: Vec<crate::extensions::Extension>,
 }
 
 #[derive(
@@ -44,7 +44,7 @@ pub struct Collection {
 	// Optional field, but the default is []
 	pub sub_collections: Vec<Self>,
 	// Optional field, but the default is []
-	pub extensions: Vec<Extension>,
+	pub extensions: Vec<crate::extensions::Extension>,
 }
 
 #[derive(
@@ -62,7 +62,7 @@ pub struct Item {
 	// Optional field, but the default is []
 	pub tags: Vec<String>,
 	// Optional field, but the default is []
-	pub extensions: Vec<Extension>,
+	pub extensions: Vec<crate::extensions::Extension>,
 }
 
 #[derive(
