@@ -1,4 +1,4 @@
-use crate::{Base64UrlString, ShouldBe};
+use crate::{Base64Url, ShouldBe};
 
 #[derive(
 	Clone, Debug, Hash,
@@ -21,7 +21,7 @@ pub enum Extension {
 )]
 pub struct SharingAccessor {
 	pub type_: ShouldBe<SharingAccessorType>,
-	pub account_id: Base64UrlString,
+	pub account_id: Base64Url,
 	pub name: String,
 	pub permissions: Vec<ShouldBe<SharingAccessorPermission>>,
 }

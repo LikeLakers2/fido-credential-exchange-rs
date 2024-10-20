@@ -1,6 +1,6 @@
 use fcx_format::CredentialType;
 
-pub type Base64UrlString = String;
+pub type Base64Url = String;
 pub type ShouldBe<T> = Result<T, String>;
 
 pub type JWK = String;
@@ -48,7 +48,7 @@ pub struct ExportResponse {
 	pub hpke: HPKEParameters,
 	pub archive: ShouldBe<ArchiveAlgorithm>,
 	pub exporter: String,
-	pub payload: Base64UrlString,
+	pub payload: Base64Url,
 }
 
 #[derive(

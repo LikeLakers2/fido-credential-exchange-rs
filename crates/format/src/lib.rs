@@ -1,6 +1,6 @@
 pub mod extensions;
 
-pub type Base64UrlString = String;
+pub type Base64Url = String;
 pub type ShouldBe<T> = Result<T, String>;
 pub type Uri = String;
 
@@ -20,7 +20,7 @@ pub struct Header {
 	PartialEq, Eq, PartialOrd, Ord,
 )]
 pub struct Account {
-	pub id: Base64UrlString,
+	pub id: Base64Url,
 	pub user_name: String,
 	pub email: String,
 	pub full_name: Option<String>,
@@ -36,7 +36,7 @@ pub struct Account {
 	PartialEq, Eq, PartialOrd, Ord,
 )]
 pub struct Collection {
-	pub id: Base64UrlString,
+	pub id: Base64Url,
 	pub title: String,
 	pub subtitle: Option<String>,
 	pub icon: Option<String>,
@@ -52,7 +52,7 @@ pub struct Collection {
 	PartialEq, Eq, PartialOrd, Ord,
 )]
 pub struct Item {
-	pub id: Base64UrlString,
+	pub id: Base64Url,
 	pub creation_at: u64,
 	pub modified_at: u64,
 	pub type_: ShouldBe<ItemType>,
@@ -83,8 +83,8 @@ pub enum ItemType {
 	PartialEq, Eq, PartialOrd, Ord,
 )]
 pub struct LinkedItem {
-	pub item: Base64UrlString,
-	pub account: Option<Base64UrlString>,
+	pub item: Base64Url,
+	pub account: Option<Base64Url>,
 }
 
 #[derive(
@@ -106,12 +106,12 @@ pub enum Credential {
 	
 	Passkey {
 		// type_ = "passkey"
-		credential_id: Base64UrlString,
+		credential_id: Base64Url,
 		rp_id: String,
 		user_name: String,
 		user_display_name: String,
 		user_handle: String,
-		key: Base64UrlString,
+		key: Base64Url,
 		fido2_extensions: Option<Fido2Extensions>,
 	},
 	
@@ -201,7 +201,7 @@ pub enum OtpHashAlgorithm {
 	PartialEq, Eq, PartialOrd, Ord,
 )]
 pub struct EditableField {
-	pub id: Base64UrlString,
+	pub id: Base64Url,
 	pub field_type: ShouldBe<FieldType>,
 	pub value: String,
 	pub label: Option<String>,
@@ -232,7 +232,7 @@ pub enum FieldType {
 )]
 pub struct Fido2Extensions {
 	pub hmac_secret: Option<Fido2HmacSecret>,
-	pub cred_blob: Option<Base64UrlString>,
+	pub cred_blob: Option<Base64Url>,
 	pub large_blob: Option<Fido2LargeBlob>,
 	pub payments: Option<bool>,
 	pub supplemental_keys: Option<Fido2SupplementalKeys>,
@@ -244,7 +244,7 @@ pub struct Fido2Extensions {
 )]
 pub struct Fido2HmacSecret {
 	pub algorithm: String,
-	pub secret: Base64UrlString,
+	pub secret: Base64Url,
 }
 
 #[derive(
@@ -254,7 +254,7 @@ pub struct Fido2HmacSecret {
 pub struct Fido2LargeBlob {
 	pub size: u64,
 	pub alg: String,
-	pub data: Base64UrlString,
+	pub data: Base64Url,
 }
 
 #[derive(
