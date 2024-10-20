@@ -1,5 +1,5 @@
 # fido-credential-exchange-rs
-This repository contains Rust crates intended for use with the [FIDO Credential Exchange specifications](https://fidoalliance.org/specifications-credential-exchange-specifications/). It currently contains code pertaining to the `v1.0-wd-20240522` version of the specification.
+This repository contains Rust crates intended for use with the [FIDO Credential Exchange specifications](https://fidoalliance.org/specifications-credential-exchange-specifications/). It currently contains code pertaining to the `v1.0-wd-20241003` version of the specification.
 
 As it stands, this repository is more of a toy than anything you should be using in production. Nothing is guaranteed to work or be of good quality, but if you find anything within this repository useful, don't be afraid to copy the code or use it.
 

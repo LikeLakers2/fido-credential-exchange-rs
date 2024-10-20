@@ -10,12 +10,31 @@ pub type JWK = String;
 	PartialEq, Eq, PartialOrd, Ord,
 )]
 pub struct ExportRequest {
+	// Default: 0
 	pub version: u16,
+	// At least one
 	pub hpke: Vec<HPKEParameters>,
+	// At least one
 	pub archive: Vec<ShouldBe<ArchiveAlgorithm>>,
+	pub mode: String,
 	pub importer: String,
+	// At least one, if defined
 	pub credential_types: Option<Vec<ShouldBe<CredentialType>>>,
+	// At least one, if defined
 	pub known_extensions: Option<Vec<String>>,
+}
+
+#[derive(
+	Clone, Copy, Debug, Hash,
+	PartialEq, Eq, PartialOrd, Ord,
+)]
+pub enum ResponseMode {
+	// "direct"
+	Direct,
+	// "indirect"
+	Indirect,
+	// "self"
+	Self_,
 }
 
 #[derive(
@@ -47,9 +66,13 @@ pub struct HPKEParameters {
 	PartialEq, Eq, PartialOrd, Ord,
 )]
 pub enum HPKEMode {
+	// mode = "base"
 	Base,
+	// mode = "psk"
 	Psk,
+	// mode = "auth"
 	Auth,
+	// mode = "auth-psk"
 	AuthPsk,
 }
 
@@ -58,5 +81,6 @@ pub enum HPKEMode {
 	PartialEq, Eq, PartialOrd, Ord,
 )]
 pub enum ArchiveAlgorithm {
+	// archive = "deflate"
 	Deflate,
 }

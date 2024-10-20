@@ -1,8 +1,6 @@
 pub type Base64UrlString = String;
 pub type ShouldBe<T> = Result<T, String>;
-
-pub type Object = ();
-
+pub type Uri = String;
 
 #[derive(
 	Clone, Debug, Hash,
@@ -26,8 +24,9 @@ pub struct Account {
 	pub full_name: Option<String>,
 	pub icon: Option<String>,
 	pub collections: Vec<Collection>,
-	pub items: Vec<Collection>,
-	pub extensions: Option<Vec<Extension>>,
+	pub items: Vec<Item>,
+	// Optional field, but the default is []
+	pub extensions: Vec<Extension>,
 }
 
 #[derive(
@@ -39,9 +38,11 @@ pub struct Collection {
 	pub title: String,
 	pub subtitle: Option<String>,
 	pub icon: Option<String>,
-	pub items: Vec<Item>,
-	pub sub_collections: Option<Vec<Self>>,
-	pub extensions: Option<Vec<Extension>>,
+	pub items: Vec<LinkedItem>,
+	// Optional field, but the default is []
+	pub sub_collections: Vec<Self>,
+	// Optional field, but the default is []
+	pub extensions: Vec<Extension>,
 }
 
 #[derive(
@@ -56,7 +57,9 @@ pub struct Item {
 	pub title: String,
 	pub subtitle: Option<String>,
 	pub credentials: Vec<Credential>,
+	// Optional field, but the default is []
 	pub tags: Vec<String>,
+	// Optional field, but the default is []
 	pub extensions: Vec<Extension>,
 }
 
@@ -77,6 +80,15 @@ pub enum ItemType {
 	Clone, Debug, Hash,
 	PartialEq, Eq, PartialOrd, Ord,
 )]
+pub struct LinkedItem {
+	pub item: Base64UrlString,
+	pub account: Option<Base64UrlString>,
+}
+
+#[derive(
+	Clone, Debug, Hash,
+	PartialEq, Eq, PartialOrd, Ord,
+)]
 pub enum Credential {
 	Other {
 		// type_ is unknown or not one of the below options
@@ -85,7 +97,7 @@ pub enum Credential {
 	
 	BasicAuth {
 		// type_ = "basic-auth"
-		urls: Vec<String>,
+		urls: Vec<Uri>,
 		username: Option<EditableField>,
 		password: Option<EditableField>,
 	},
@@ -97,12 +109,18 @@ pub enum Credential {
 		user_name: String,
 		user_display_name: String,
 		user_handle: String,
-		key: Object,
+		key: Base64UrlString,
 		fido2_extensions: Option<Fido2Extensions>,
 	},
 	
 	Totp {
 		// type_ = "totp"
+		secret: String,
+		period: u16,
+		digits: u16,
+		username: String,
+		algorithm: ShouldBe<OtpHashAlgorithm>,
+		issuer: Option<String>,
 	},
 	
 	CryptographicKey {
@@ -111,6 +129,7 @@ pub enum Credential {
 	
 	Note {
 		// type_ = "note"
+		content: String,
 	},
 	
 	File {
@@ -163,15 +182,46 @@ pub enum CredentialType {
 }
 
 #[derive(
+	Clone, Copy, Debug, Hash,
+	PartialEq, Eq, PartialOrd, Ord,
+)]
+pub enum OtpHashAlgorithm {
+	// algorithm = "sha1"
+	Sha1,
+	// algorithm = "sha256"
+	Sha256,
+	// algorithm = "sha512"
+	Sha512,
+}
+
+#[derive(
 	Clone, Debug, Hash,
 	PartialEq, Eq, PartialOrd, Ord,
 )]
 pub struct EditableField {
 	pub id: Base64UrlString,
-	pub field_type: String,
+	pub field_type: ShouldBe<FieldType>,
 	pub value: String,
 	pub label: Option<String>,
-	pub designation: Option<String>,
+}
+
+#[derive(
+	Clone, Copy, Debug, Hash,
+	PartialEq, Eq, PartialOrd, Ord,
+)]
+pub enum FieldType {
+	// field_type = "string"
+	String,
+	// field_type = "concealed-string"
+	ConcealedString,
+	// field_type = "email"
+	Email,
+	// field_type = "number"
+	Number,
+	// field_type = "boolean"
+	Boolean,
+	// field_type = "date"
+	Date,
 }
 
 #[derive(
@@ -245,7 +295,9 @@ pub struct SharingAccessor {
 	PartialEq, Eq, PartialOrd, Ord,
 )]
 pub enum SharingAccessorType {
+	// type_ = "user"
 	User,
+	// type_ = "group"
 	Group,
 }
 
@@ -254,10 +306,16 @@ pub enum SharingAccessorType {
 	PartialEq, Eq, PartialOrd, Ord,
 )]
 pub enum SharingAccessorPermission {
+	// permissions = ["read"]
 	Read,
+	// permissions = ["update"]
 	Update,
+	// permissions = ["create"]
 	Create,
+	// permissions = ["delete"]
 	Delete,
+	// permissions = ["share"]
 	Share,
+	// permissions = ["manage"]
 	Manage
 }
