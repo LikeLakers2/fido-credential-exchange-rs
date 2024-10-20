@@ -16,7 +16,9 @@ pub struct ExportRequest {
 	pub hpke: Vec<HPKEParameters>,
 	// At least one
 	pub archive: Vec<ShouldBe<ArchiveAlgorithm>>,
-	pub mode: String,
+	// This field is defined solely as type `tstr` in the spec, but it seems to want a ResponseMode,
+	// so I'm going to assume they allow either-or.
+	pub mode: ShouldBe<ResponseMode>,
 	pub importer: String,
 	// At least one, if defined
 	pub credential_types: Option<Vec<ShouldBe<CredentialType>>>,
